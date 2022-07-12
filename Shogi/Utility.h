@@ -1,4 +1,5 @@
 #pragma once
+#include <SFML/Graphics.hpp>
 const enum Color { BLACK = 0, WHITE = 15 };
 
 struct Pos {
@@ -8,4 +9,4 @@ struct Pos {
 };
 
 //Mouse
-Pos mouseL();
+Pos mouseL(sf::RenderWindow& window, sf::Event& event);

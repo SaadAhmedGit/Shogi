@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <SFML/Graphics.hpp>
 #include "Utility.h"
 
 class Piece;
@@ -9,9 +10,11 @@ class Board
 {
 private:
 	std::vector<std::vector<Piece*>> piecesArr;
+	sf::RenderWindow* winP;
 public:
-	Board();
+	Board(sf::RenderWindow* windowPtr);
 	~Board();
+	sf::RenderWindow* getWinPtr();
 	void movePiece(const Pos src, const Pos dest);
 	void printBoard();
 	Piece*& operator[](const Pos p);

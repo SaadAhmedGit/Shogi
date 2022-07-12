@@ -3,7 +3,7 @@
 
 bool Piece::isDiagonal(Pos tgt) const
 {
-	return tgt.r - this->pos.r == tgt.c - this->pos.c;
+	return abs(tgt.r - this->pos.r) == abs(tgt.c - this->pos.c);
 }
 
 bool Piece::isDiagClear(Pos tgt) const

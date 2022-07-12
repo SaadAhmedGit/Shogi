@@ -1,4 +1,5 @@
 #pragma once
+#include <SFML/Graphics.hpp>
 #include <vector>
 #include "Utility.h"
 
@@ -8,12 +9,13 @@ class Player;
 class Shogi
 {
 private:
-	Board* B;
 	bool turn;
+	sf::RenderWindow window;
 	std::vector<Player> PlayersArr;
+	Board* B;
 
 	//Helpers
-	Pos pickOnBoard() const;
+	Pos pickOnBoard(sf::RenderWindow& window, sf::Event& event) const;
 	bool isValidSelect(Pos tgt) const;
 	bool isValidDest(Pos tgt) const;
 

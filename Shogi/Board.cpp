@@ -5,7 +5,8 @@
 #include "Pawn.h"
 #include "Bishop.h"
 
-Board::Board()
+Board::Board(sf::RenderWindow* windowPtr)
+	:winP(windowPtr)
 {
 	std::ifstream setupFile("dfltSetup.txt");
 	if (!setupFile.is_open())
@@ -52,6 +53,11 @@ Board::~Board()
 {
 }
 
+sf::RenderWindow* Board::getWinPtr()
+{
+	return this->winP;
+}
+
 void Board::movePiece(const Pos src, const Pos dest)
 {
 	(*this)[src]->move(dest);
@@ -62,6 +68,11 @@ void Board::movePiece(const Pos src, const Pos dest)
 void Board::printBoard()
 {
 	system("cls");
+	sf::Texture boardTexture;
+	boardTexture.loadFromFile("assets\\board.png");
+	sf::Sprite board(boardTexture);
+	board.setPosition(0, 0);
+	this->getWinPtr()->draw(board);
 	for (int i = 0; i < 9; i++)
 	{
 		for (int j = 0; j < 9; j++)
@@ -73,6 +84,7 @@ void Board::printBoard()
 		}
 		std::cout << std::endl;
 	}
+	this->getWinPtr()->display();
 }
 
 Piece*& Board::operator[](const Pos p)

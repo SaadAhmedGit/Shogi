@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Pawn.h"
+#include "Board.h"
 
 Pawn::Pawn(Pos _pos, Color _team, Board* _B)
 	:Piece(_pos, _team, _B)
@@ -27,6 +28,12 @@ bool Pawn::isValidMove(Pos tgtPos) const
 
 void Pawn::draw() const
 {
-	//Convert to graphics using SFML
-	std::cout << (this->team == BLACK ? 'p' : 'P');
+	//get the pawn texture using SFML called asset/pawn.png and diaply it on window
+	sf::Texture pawnTexture;
+	pawnTexture.loadFromFile("assets\\pawn.png");
+	sf::Sprite pawnSprite;
+	pawnSprite.setTexture(pawnTexture);
+	pawnSprite.setPosition((pos.c * 96) + 50, (pos.r * 96) + 50);
+	pawnSprite.setScale({ 0.4,0.4 });
+	this->B->getWinPtr()->draw(pawnSprite);
 }
