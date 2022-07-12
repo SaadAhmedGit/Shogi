@@ -9,16 +9,24 @@ Pawn::Pawn(Pos _pos, Color _team, Board* _B)
 
 bool Pawn::isValidMove(Pos tgtPos) const
 {
-	//TODO: Go to the board and do sum stuff then decide what to return
-	return true;
-}
+	if (tgtPos.c == this->pos.c)
+	{
 
-void Pawn::move(Pos newPos)
-{
-	this->pos = newPos;
+		switch (this->team)
+		{
+			case WHITE:
+				return tgtPos.r == this->pos.r - 1;
+				break;
+			case BLACK:
+				return tgtPos.r == this->pos.r + 1;
+				break;
+		}
+	}
+	return false;
 }
 
 void Pawn::draw() const
 {
-	std::cout << (this->team == BLACK ? 'P' : 'p');
+	//Convert to graphics using SFML
+	std::cout << (this->team == BLACK ? 'p' : 'P');
 }

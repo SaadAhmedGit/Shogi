@@ -1,13 +1,9 @@
 #pragma once
-
 #include "Piece.h"
-
-class Pawn : public Piece
+class Bishop : public Piece
 {
-private:
-
 public:
-	Pawn(Pos _pos, Color _team, Board* _B);
+	Bishop(Pos _pos, Color _team, Board* _B);
 	virtual bool isValidMove(Pos tgtPos) const;
 	virtual void draw() const;
 };

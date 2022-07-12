@@ -16,7 +16,7 @@ bool Shogi::isValidSelect(Pos tgt) const
 		||
 		tgt.c < 0 || tgt.c > 8)
 		return false;
-	auto tgtPtr = (*B)[tgt.r][tgt.c];
+	auto tgtPtr = (*B)[tgt];
 	return tgtPtr != nullptr && (tgtPtr->getTeam() == PlayersArr[turn].getTeam());
 }
 
@@ -60,10 +60,8 @@ void Shogi::play()
 			std::cout << "Select the destination (r,c): ";
 			tgtPos = pickOnBoard();
 
-		} while (!isValidDest(tgtPos));
-		(*B)[srcPos.r][srcPos.c]->move(tgtPos);
-		(*B)[tgtPos.r][tgtPos.c] = (*B)[srcPos.r][srcPos.c];
-		(*B)[srcPos.r][srcPos.c] = nullptr;
+		} while (!isValidDest(tgtPos) || !(*B)[srcPos]->isValidMove(tgtPos));
+		B->movePiece(srcPos, tgtPos);
 		turn = !turn;
 	} while (true);
 }

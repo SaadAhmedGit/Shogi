@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-
+#include "Utility.h"
 
 class Piece;
 class Player;
@@ -12,6 +12,7 @@ private:
 public:
 	Board();
 	~Board();
+	void movePiece(const Pos src, const Pos dest);
 	void printBoard();
-	std::vector<Piece*>& operator[](int i);
+	Piece*& operator[](const Pos p);
 };

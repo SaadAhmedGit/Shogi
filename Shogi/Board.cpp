@@ -1,27 +1,62 @@
 #include <iostream>
+#include <fstream>
 
 #include "Board.h"
 #include "Pawn.h"
+#include "Bishop.h"
 
 Board::Board()
 {
+	std::ifstream setupFile("dfltSetup.txt");
+	if (!setupFile.is_open())
+		throw std::exception("The dfltSetup.dat file is either corrupted or not present. Please re-install the game");
 	for (int i = 0; i < 9; i++)
 	{
 		for (int j = 0; j < 9; j++)
 		{
 			piecesArr.push_back({});
-			if (i == 1)
-				piecesArr[i].emplace_back(new Pawn({ i, j }, BLACK, this));
-			else if (i == 7)
-				piecesArr[i].emplace_back(new Pawn({ i, j }, WHITE, this));
-			else
-				piecesArr[i].emplace_back(nullptr);
+			char sym = 0;
+			setupFile >> sym;
+			Color team = (sym >= 'a' && sym <= 'z' ? BLACK : WHITE);
+			switch (tolower(sym))
+			{
+				case 'p':
+					piecesArr[i].push_back(new Pawn({ i, j }, team, this));
+					break;
+				case 'b':
+					piecesArr[i].push_back(new Bishop({ i, j }, team, this));
+					break;
+				case 'r':
+					piecesArr[i].push_back(new Pawn({ i, j }, team, this));
+					break;
+				case 'g':
+					piecesArr[i].push_back(new Pawn({ i, j }, team, this));
+					break;
+				case 's':
+					piecesArr[i].push_back(new Pawn({ i, j }, team, this));
+					break;
+				case 'k':
+					piecesArr[i].push_back(new Pawn({ i, j }, team, this));
+					break;
+				case 'h':
+					piecesArr[i].push_back(new Pawn({ i, j }, team, this));
+					break;
+				default:
+					piecesArr[i].push_back(nullptr);
+			}
 		}
 	}
 }
 
 Board::~Board()
 {
+}
+
+void Board::movePiece(const Pos src, const Pos dest)
+{
+	(*this)[src]->move(dest);
+	(*this)[dest] = (*this)[src];
+	(*this)[src] = nullptr;
 }
 
 void Board::printBoard()
@@ -40,7 +75,7 @@ void Board::printBoard()
 	}
 }
 
-std::vector<Piece*>& Board::operator[](int i)
+Piece*& Board::operator[](const Pos p)
 {
-	return piecesArr[i];
+	return piecesArr[p.r][p.c];
 }
