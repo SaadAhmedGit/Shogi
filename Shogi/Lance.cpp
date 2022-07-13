@@ -1,34 +1,26 @@
-#include <iostream>
-
-#include "Pawn.h"
+#include "Lance.h"
 #include "Board.h"
 
-
-sf::Texture Pawn::texture;
-Pawn::Pawn(Pos _pos, Color _team, Board* _B)
+Lance::Lance(Pos _pos, Color _team, Board* _B)
 	:Piece(_pos, _team, _B)
 {
 }
 
-bool Pawn::isValidMove(Pos tgtPos) const
-{
-	if (tgtPos.c == this->pos.c)
-	{
+sf::Texture Lance::texture;
 
-		switch (this->team)
-		{
-			case WHITE:
-				return tgtPos.r == this->pos.r - 1;
-				break;
-			case BLACK:
-				return tgtPos.r == this->pos.r + 1;
-				break;
-		}
+bool Lance::isValidMove(Pos tgtPos) const
+{
+	if (team == WHITE)
+	{
+		return (tgtPos.r < pos.r) && isVertical(tgtPos) && isVertClear(tgtPos);
 	}
-	return false;
+	else
+	{
+		return (tgtPos.r > pos.r) && isVertical(tgtPos) && isVertClear(tgtPos);
+	}
 }
 
-void Pawn::draw() const
+void Lance::draw() const
 {
 	sf::Sprite sprite;
 	sprite.setTexture(texture);

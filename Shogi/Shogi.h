@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "Utility.h"
+#include "Pawn.h"
 
 class Board;
 class Player;
@@ -21,6 +22,7 @@ private:
 
 public:
 	Shogi();
+	void loadAssets();
 	~Shogi();
 	void play();
 };

@@ -21,6 +21,7 @@ public:
 	virtual ~Piece();
 	virtual bool isValidMove(Pos tgtPos) const = 0;
 	void move(Pos newPos);
+	std::vector<std::vector<bool>> getValidMoves() const;
 	virtual void draw() const = 0;
 	Pos getPos() const;
 	Color getTeam() const;

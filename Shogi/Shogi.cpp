@@ -5,12 +5,16 @@
 #include "Board.h"
 #include "Player.h"
 #include "Piece.h"
+#include "Bishop.h"
+#include "Lance.h"
+#include "Rook.h"
+#include "GoldenGeneral.h"
 
 Pos Shogi::pickOnBoard(sf::RenderWindow& window, sf::Event& event) const
 {
 	Pos raw = mouseL(window, event);
-	raw.r -= 50;
-	raw.c -= 49;
+	raw.r -= 52;
+	raw.c -= 51;
 	raw.r /= 96;
 	raw.c /= 96;
 	return raw;
@@ -42,6 +46,15 @@ Shogi::Shogi()
 	PlayersArr.emplace_back("Zoraz", BLACK);
 }
 
+void Shogi::loadAssets()
+{
+	Pawn::texture.loadFromFile("assets\\Pawn.png");
+	Bishop::texture.loadFromFile("assets\\Bishop.png");
+	Lance::texture.loadFromFile("assets\\Lance.png");
+	Rook::texture.loadFromFile("assets\\Rook.png");
+	GoldenGeneral::texture.loadFromFile("assets\\GoldenGeneral.png");
+}
+
 Shogi::~Shogi()
 {
 	delete B;
@@ -50,9 +63,10 @@ Shogi::~Shogi()
 void Shogi::play()
 {
 	window.setFramerateLimit(60);
+	window.setKeyRepeatEnabled(false);
 
 	sf::Texture backgroundTexture;
-	backgroundTexture.loadFromFile("assets\\background.png");
+	backgroundTexture.loadFromFile("assets\\w-background.jpg");
 	sf::Sprite background(backgroundTexture);
 
 	sf::Texture boardTexture;
@@ -62,31 +76,32 @@ void Shogi::play()
 	window.draw(background);
 	window.draw(board);
 	window.display();
-	sf::Event event;
 	while (window.isOpen())
 	{
+		sf::Event event;
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
+			{
 				window.close();
-			//std::cout << "(" << p.r << ", " << p.c << ")\n";
-			//window.clear();
-			//window.display();
+				exit(0);
+			}
 			do
 			{
 				B->printBoard();
-				std::cout << PlayersArr[turn].getName() << "'s Turn (" << PlayersArr[turn].getTeamName() << ")" << std::endl;
-				Pos tgtPos{};
-				Pos srcPos{};
+				window.display();
+				Pos tgtPos;
+				Pos srcPos;
 				do
 				{
-					std::cout << "Select a piece (r,c): ";
 					srcPos = pickOnBoard(window, event);
 
 				} while (!isValidSelect(srcPos));
+				B->printBoard();
+				B->highLightMoves(srcPos);
+				window.display();
 				do
 				{
-					std::cout << "Select the destination (r,c): ";
 					tgtPos = pickOnBoard(window, event);
 
 				} while (!isValidDest(tgtPos) || !(*B)[srcPos]->isValidMove(tgtPos));

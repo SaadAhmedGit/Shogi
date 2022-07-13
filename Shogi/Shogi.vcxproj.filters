@@ -39,6 +39,15 @@
     <ClCompile Include="Utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Lance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rook.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GoldenGeneral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shogi.h">
@@ -62,6 +71,15 @@
     <ClInclude Include="Utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Lance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GoldenGeneral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="dfltSetup.txt">
@@ -76,6 +94,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="assets\pawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\bishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\lance.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

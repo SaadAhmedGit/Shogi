@@ -16,6 +16,7 @@ public:
 	~Board();
 	sf::RenderWindow* getWinPtr();
 	void movePiece(const Pos src, const Pos dest);
+	void highLightMoves(Pos srcPiece);
 	void printBoard();
 	Piece*& operator[](const Pos p);
 };

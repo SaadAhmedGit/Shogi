@@ -57,7 +57,7 @@ bool Piece::isHorizClear(Pos tgt) const
 	Pos dir = { 0,0 };
 	dir.c = (tgt.c > pos.c ? 1 : -1);
 
-	Pos i = { pos.r, pos.c + dir.c};
+	Pos i = { pos.r, pos.c + dir.c };
 
 	while (abs(i.c - tgt.c) > 0)
 	{
@@ -81,6 +81,30 @@ Piece::~Piece()
 void Piece::move(Pos newPos)
 {
 	this->pos = newPos;
+}
+
+std::vector<std::vector<bool>> Piece::getValidMoves() const
+{
+	std::vector<std::vector<bool>> validMoves;
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			validMoves.push_back(std::vector<bool>(9));
+			if ((*B)[{i, j}] == nullptr && this->isValidMove({ i, j }))
+			{
+				validMoves[i][j] = true;
+			}
+			else if ((*B)[{i, j}] != nullptr && this->getTeam() != (*B)[{i, j}]->getTeam()
+					 && this->isValidMove({ i, j }))
+			{
+				validMoves[i][j] = true;
+			}
+			else
+				validMoves[i][j] = false;
+		}
+	}
+	return validMoves;
 }
 
 Pos Piece::getPos() const

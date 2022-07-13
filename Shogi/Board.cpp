@@ -4,6 +4,9 @@
 #include "Board.h"
 #include "Pawn.h"
 #include "Bishop.h"
+#include "Lance.h"
+#include "Rook.h"
+#include "GoldenGeneral.h"
 
 Board::Board(sf::RenderWindow* windowPtr)
 	:winP(windowPtr)
@@ -27,11 +30,14 @@ Board::Board(sf::RenderWindow* windowPtr)
 				case 'b':
 					piecesArr[i].push_back(new Bishop({ i, j }, team, this));
 					break;
+				case 'l':
+					piecesArr[i].push_back(new Lance({ i, j }, team, this));
+					break;
 				case 'r':
-					piecesArr[i].push_back(new Pawn({ i, j }, team, this));
+					piecesArr[i].push_back(new Rook({ i, j }, team, this));
 					break;
 				case 'g':
-					piecesArr[i].push_back(new Pawn({ i, j }, team, this));
+					piecesArr[i].push_back(new GoldenGeneral({ i, j }, team, this));
 					break;
 				case 's':
 					piecesArr[i].push_back(new Pawn({ i, j }, team, this));
@@ -65,26 +71,61 @@ void Board::movePiece(const Pos src, const Pos dest)
 	(*this)[src] = nullptr;
 }
 
+void Board::highLightMoves(Pos srcPiece)
+{
+	if ((*this)[srcPiece] == nullptr) return;
+	sf::Texture greenHighlight;
+	sf::Texture redHighlight;
+	redHighlight.loadFromFile("assets\\red-h.png");
+	greenHighlight.loadFromFile("assets\\green-h.png");
+	sf::Sprite greenHighlightSprite(greenHighlight);
+	sf::Sprite redHighlightSprite(redHighlight);
+
+	std::vector<std::vector<bool>> validMoves = (*this)[srcPiece]->getValidMoves();
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			if (validMoves[i][j])
+			{
+				if ((*this)[{i, j}] != nullptr)
+				{
+					if ((*this)[{i, j}]->getTeam() != (*this)[srcPiece]->getTeam())
+					{
+						redHighlightSprite.setPosition((j * 96) + 56, (i * 96) + 56);
+						winP->draw(redHighlightSprite);
+						continue;
+					}
+				}
+				greenHighlightSprite.setPosition((j * 96) + 56, (i * 96) + 56);
+				winP->draw(greenHighlightSprite);
+			}
+		}
+	}
+
+}
+
 void Board::printBoard()
 {
-	system("cls");
+	sf::Texture backgroundTexture;
+	backgroundTexture.loadFromFile("assets\\w-background.jpg");
+	sf::Sprite background(backgroundTexture);
+	this->getWinPtr()->draw(background);
+
 	sf::Texture boardTexture;
 	boardTexture.loadFromFile("assets\\board.png");
 	sf::Sprite board(boardTexture);
 	board.setPosition(0, 0);
 	this->getWinPtr()->draw(board);
+
 	for (int i = 0; i < 9; i++)
 	{
 		for (int j = 0; j < 9; j++)
 		{
-			if (piecesArr[i][j] == nullptr)
-				std::cout << "-";
-			else
+			if (piecesArr[i][j] != nullptr)
 				piecesArr[i][j]->draw();
 		}
-		std::cout << std::endl;
 	}
-	this->getWinPtr()->display();
 }
 
 Piece*& Board::operator[](const Pos p)

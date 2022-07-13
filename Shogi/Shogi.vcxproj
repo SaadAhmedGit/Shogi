@@ -141,19 +141,25 @@
   <ItemGroup>
     <ClCompile Include="Bishop.cpp" />
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="GoldenGeneral.cpp" />
+    <ClCompile Include="Lance.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Rook.cpp" />
     <ClCompile Include="Shogi.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bishop.h" />
     <ClInclude Include="Board.h" />
+    <ClInclude Include="GoldenGeneral.h" />
+    <ClInclude Include="Lance.h" />
     <ClInclude Include="Pawn.h" />
     <ClInclude Include="Piece.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Rook.h" />
     <ClInclude Include="Shogi.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
@@ -162,7 +168,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\background.png" />
+    <Image Include="assets\bishop.png" />
     <Image Include="assets\board.png" />
+    <Image Include="assets\lance.png" />
     <Image Include="assets\pawn.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
