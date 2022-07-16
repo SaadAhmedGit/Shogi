@@ -13,6 +13,7 @@ std::string Player::getTeamName() const
 {
 	return (this->team == 0 ? "Black" : "White");
 }
+
 const std::string& Player::getName() const
 {
 	return this->name;

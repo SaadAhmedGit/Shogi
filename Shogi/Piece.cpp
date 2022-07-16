@@ -69,8 +69,8 @@ bool Piece::isHorizClear(Pos tgt) const
 	return true;
 }
 
-Piece::Piece(const Pos _pos, const Color _team, Board* const  _B)
-	:pos(_pos), team(_team), B(_B)
+Piece::Piece(const Pos _pos, const Color _team, Board* const  _B, bool _isPromoted)
+	:pos(_pos), team(_team), B(_B), isPromoted(_isPromoted)
 {
 }
 
@@ -81,6 +81,23 @@ Piece::~Piece()
 void Piece::move(Pos newPos)
 {
 	this->pos = newPos;
+}
+
+void Piece::promote()
+{
+	isPromoted = true;
+}
+
+bool Piece::isPromotable() const
+{
+	if (!isPromoted)
+	{
+		if (team == WHITE)
+			return pos.r < 3;
+		else
+			return pos.r > 5;
+	}
+	return false;
 }
 
 std::vector<std::vector<bool>> Piece::getValidMoves() const

@@ -18,5 +18,6 @@ public:
 	void movePiece(const Pos src, const Pos dest);
 	void highLightMoves(Pos srcPiece);
 	void printBoard();
+	Pos findKing(Color team);
 	Piece*& operator[](const Pos p);
 };

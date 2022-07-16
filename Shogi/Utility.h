@@ -9,4 +9,4 @@ struct Pos {
 };
 
 //Mouse
-Pos mouseL(sf::RenderWindow& window, sf::Event& event);
+//Pos mouseL(sf::RenderWindow& window, sf::Event& event);

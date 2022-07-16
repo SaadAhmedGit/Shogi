@@ -7,6 +7,11 @@ GoldenGeneral::GoldenGeneral(Pos _pos, Color _team, Board* _B)
 {
 }
 
+bool GoldenGeneral::isPromotable() const
+{
+	return false;
+}
+
 bool GoldenGeneral::isValidMove(Pos tgtPos) const
 {
 	if (abs(tgtPos.r - pos.r) > 1
@@ -26,13 +31,13 @@ void GoldenGeneral::draw() const
 {
 	sf::Sprite sprite;
 	sprite.setTexture(texture);
-	sprite.setScale({ 0.4,0.4 });
-	sprite.setScale({ 0.4,0.4 });
-	sprite.setPosition((pos.c * 96) + 58, (pos.r * 96) + 52);
 	if (team == BLACK)
 	{
 		sprite.setRotation(180);
 		sprite.setPosition((pos.c * 96) + 132, (pos.r * 96) + 142);
 	}
+	else
+		sprite.setPosition((pos.c * 96) + 58, (pos.r * 96) + 52);
+	sprite.setScale({ 0.4,0.4 });
 	this->B->getWinPtr()->draw(sprite);
 }

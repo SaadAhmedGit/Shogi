@@ -3,10 +3,13 @@
 
 #include "Board.h"
 #include "Pawn.h"
+#include "King.h"
 #include "Bishop.h"
 #include "Lance.h"
 #include "Rook.h"
 #include "GoldenGeneral.h"
+#include "SilverGeneral.h"
+#include "Knight.h"
 
 Board::Board(sf::RenderWindow* windowPtr)
 	:winP(windowPtr)
@@ -40,13 +43,13 @@ Board::Board(sf::RenderWindow* windowPtr)
 					piecesArr[i].push_back(new GoldenGeneral({ i, j }, team, this));
 					break;
 				case 's':
-					piecesArr[i].push_back(new Pawn({ i, j }, team, this));
+					piecesArr[i].push_back(new SilverGeneral({ i, j }, team, this));
 					break;
 				case 'k':
-					piecesArr[i].push_back(new Pawn({ i, j }, team, this));
+					piecesArr[i].push_back(new King({ i, j }, team, this));
 					break;
 				case 'h':
-					piecesArr[i].push_back(new Pawn({ i, j }, team, this));
+					piecesArr[i].push_back(new Knight({ i, j }, team, this));
 					break;
 				default:
 					piecesArr[i].push_back(nullptr);
@@ -126,6 +129,21 @@ void Board::printBoard()
 				piecesArr[i][j]->draw();
 		}
 	}
+}
+
+Pos Board::findKing(Color team)
+{
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			if (dynamic_cast<King*> ((*this)[{i, j}]) && ((*this)[{i, j}]->getTeam() == team))
+			{
+				return (*this)[{i, j}]->getPos();
+			}
+		}
+	}
+	return Pos(-1, -1);
 }
 
 Piece*& Board::operator[](const Pos p)
