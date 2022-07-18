@@ -1,5 +1,5 @@
 #pragma once
-#include "Utility.h"
+#include "../../Utility.h"
 
 class Board;
 class Piece
@@ -26,6 +26,7 @@ public:
 	virtual bool isPromotable() const;
 	std::vector<std::vector<bool>> getValidMoves() const;
 	virtual void draw() const = 0;
+	virtual void drawInPrison(sf::Vector2i corner, const int cellNo) const = 0;
 	Pos getPos() const;
 	Color getTeam() const;
 };

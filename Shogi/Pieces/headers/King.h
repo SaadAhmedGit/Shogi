@@ -10,5 +10,6 @@ public:
 	virtual bool isValidMove(Pos tgtPos) const;
 	virtual bool isPromotable() const override;
 	virtual void draw() const;
+	virtual void drawInPrison(sf::Vector2i corner, const int cellNo) const;
 };
 

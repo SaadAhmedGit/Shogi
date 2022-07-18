@@ -1,5 +1,5 @@
-#include "King.h"
-#include "Board.h"
+#include "../headers/King.h"
+#include "../../Board.h"
 
 sf::Texture King::textureW;
 sf::Texture King::textureB;
@@ -21,17 +21,26 @@ bool King::isPromotable() const
 void King::draw() const
 {
 	sf::Sprite sprite;
+	sf::Vector2f imgDim;
 	if (team == BLACK)
 	{
 		sprite.setTexture(textureB);
+		imgDim = static_cast<sf::Vector2f>(textureB.getSize());
 		sprite.setRotation(180);
-		sprite.setPosition((pos.c * 96) + 132, (pos.r * 96) + 142);
 	}
 	else
 	{
 		sprite.setTexture(textureW);
-		sprite.setPosition((pos.c * 96) + 58, (pos.r * 96) + 52);
+		imgDim = static_cast<sf::Vector2f>(textureW.getSize());
 	}
+
+	sprite.setOrigin({ imgDim.x / 2, imgDim.y / 2 });
+	sprite.setPosition((pos.c * 96) + (BOARD_X + 98), (pos.r * 96) + (BOARD_Y + 98));
 	sprite.setScale({ 0.4,0.4 });
 	this->B->getWinPtr()->draw(sprite);
+}
+
+void King::drawInPrison(sf::Vector2i corner, const int cellNo) const
+{
+	return;
 }

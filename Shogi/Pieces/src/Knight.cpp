@@ -1,6 +1,6 @@
-#include "Knight.h"
-#include "GoldenGeneral.h"
-#include "Board.h"
+#include "../headers/Knight.h"
+#include "../headers/GoldenGeneral.h"
+#include "../../Board.h"
 
 sf::Texture Knight::texture;
 sf::Texture Knight::texture_p;
@@ -26,13 +26,18 @@ void Knight::draw() const
 	sf::Sprite sprite;
 	auto& image = isPromoted ? texture_p : texture;
 	sprite.setTexture(image);
-	if (team == BLACK)
-	{
-		sprite.setRotation(180);
-		sprite.setPosition((pos.c * 96) + 132, (pos.r * 96) + 142);
-	}
-	else
-		sprite.setPosition((pos.c * 96) + 58, (pos.r * 96) + 52);
+	sf::Vector2f imgCenter = static_cast<sf::Vector2f>(image.getSize());
+	sprite.setOrigin({ imgCenter.x / 2, imgCenter.y / 2 });
+	if (team == BLACK)	sprite.setRotation(180);
+	sprite.setPosition((pos.c * 96) + (BOARD_X + 98), (pos.r * 96) + (BOARD_Y + 98));
 	sprite.setScale({ 0.4,0.4 });
+	this->B->getWinPtr()->draw(sprite);
+}
+
+void Knight::drawInPrison(sf::Vector2i corner, const int cellNo) const
+{
+	sf::Sprite sprite(texture);
+	sprite.setPosition(corner.x + 98, corner.y + (98 * cellNo));
+	sprite.setScale(0.4, 0.4);
 	this->B->getWinPtr()->draw(sprite);
 }

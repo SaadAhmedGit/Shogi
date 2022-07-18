@@ -13,12 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Pieces">
+      <UniqueIdentifier>{69fcb461-569d-4381-a475-4a759b0bc671}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Pieces">
+      <UniqueIdentifier>{2cca01f5-5553-43ae-aeb9-729e176b9a18}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Shogi.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Piece.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
@@ -30,32 +33,38 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Pawn.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Bishop.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Lance.cpp">
+    <ClCompile Include="Prison.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rook.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Pieces\src\Bishop.cpp">
+      <Filter>Source Files\Pieces</Filter>
     </ClCompile>
-    <ClCompile Include="GoldenGeneral.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Pieces\src\GoldenGeneral.cpp">
+      <Filter>Source Files\Pieces</Filter>
     </ClCompile>
-    <ClCompile Include="SilverGeneral.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Pieces\src\King.cpp">
+      <Filter>Source Files\Pieces</Filter>
     </ClCompile>
-    <ClCompile Include="King.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Pieces\src\Knight.cpp">
+      <Filter>Source Files\Pieces</Filter>
     </ClCompile>
-    <ClCompile Include="Knight.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Pieces\src\Lance.cpp">
+      <Filter>Source Files\Pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="Pieces\src\Pawn.cpp">
+      <Filter>Source Files\Pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="Pieces\src\Piece.cpp">
+      <Filter>Source Files\Pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="Pieces\src\Rook.cpp">
+      <Filter>Source Files\Pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="Pieces\src\SilverGeneral.cpp">
+      <Filter>Source Files\Pieces</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -68,35 +77,38 @@
     <ClInclude Include="Board.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Piece.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Pawn.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Bishop.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Lance.h">
+    <ClInclude Include="Prison.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rook.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Pieces\headers\King.h">
+      <Filter>Header Files\Pieces</Filter>
     </ClInclude>
-    <ClInclude Include="GoldenGeneral.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Pieces\headers\Knight.h">
+      <Filter>Header Files\Pieces</Filter>
     </ClInclude>
-    <ClInclude Include="SilverGeneral.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Pieces\headers\Lance.h">
+      <Filter>Header Files\Pieces</Filter>
     </ClInclude>
-    <ClInclude Include="King.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Pieces\headers\Pawn.h">
+      <Filter>Header Files\Pieces</Filter>
     </ClInclude>
-    <ClInclude Include="Knight.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Pieces\headers\Piece.h">
+      <Filter>Header Files\Pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="Pieces\headers\GoldenGeneral.h">
+      <Filter>Header Files\Pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="Pieces\headers\Bishop.h">
+      <Filter>Header Files\Pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="Pieces\headers\Rook.h">
+      <Filter>Header Files\Pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="Pieces\headers\SilverGeneral.h">
+      <Filter>Header Files\Pieces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -108,9 +120,6 @@
     <Image Include="assets\background.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="assets\board.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="assets\pawn.png">
       <Filter>Resource Files</Filter>
     </Image>
@@ -118,6 +127,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="assets\lance.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\board.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

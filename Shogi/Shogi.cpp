@@ -5,20 +5,21 @@
 #include "Shogi.h"
 #include "Board.h"
 #include "Player.h"
-#include "Piece.h"
-#include "Bishop.h"
-#include "Lance.h"
-#include "Rook.h"
-#include "GoldenGeneral.h"
-#include "SilverGeneral.h"
-#include "King.h"
-#include "Knight.h"
+
+#include "Pieces/headers/Piece.h"
+#include "Pieces/headers/Bishop.h"
+#include "Pieces/headers/Lance.h"
+#include "Pieces/headers/Rook.h"
+#include "Pieces/headers/GoldenGeneral.h"
+#include "Pieces/headers/SilverGeneral.h"
+#include "Pieces/headers/King.h"
+#include "Pieces/headers/Knight.h"
 
 Pos Shogi::pickOnBoard(sf::RenderWindow& window, sf::Event& event)
 {
 	Pos raw = mouseL();
-	raw.r -= 52;
-	raw.c -= 51;
+	raw.r -= (BOARD_Y + 48);
+	raw.c -= (BOARD_X + 48);
 	raw.r /= 96;
 	raw.c /= 96;
 	return raw;
@@ -155,10 +156,21 @@ Pos Shogi::mouseL()
 }
 
 Shogi::Shogi()
-	: window(sf::VideoMode(1920, 1080), "Shogi"), B(new Board{ &(this->window) }), turn(WHITE)
+	: window(sf::VideoMode(1920, 1080), "Shogi", sf::Style::Titlebar), B(new Board{ &(this->window) }), turn(WHITE)
 {
-	PlayersArr.emplace_back("Zoraz", BLACK);
-	PlayersArr.emplace_back("Saad", WHITE);
+	window.setPosition({ -10,0 });
+	Player p1("Saad", WHITE,
+			  {
+				  {BOARD_X - (100 + 98),240},
+				  &window
+			  });
+	Player p2("Zoraz", BLACK,
+			  {
+				  {(BOARD_X + 968) + 100,240},
+				  &window
+			  });
+	PlayersArr.push_back(p2);
+	PlayersArr.push_back(p1);
 }
 
 void Shogi::loadAssets()
@@ -189,6 +201,7 @@ void Shogi::loadAssets()
 	//Misc
 	Shogi::font.loadFromFile("assets\\fonts\\times.ttf");
 	Shogi::promoTexture.loadFromFile("assets\\promo-prompt.png");
+	Prison::texture.loadFromFile("assets/prison.png");
 }
 
 Shogi::~Shogi()
@@ -203,6 +216,8 @@ void Shogi::play()
 	window.setFramerateLimit(60);
 	window.setKeyRepeatEnabled(false);
 
+	PlayersArr[0].capture(new Bishop({ 2, 3 }, WHITE, B));
+
 	sf::Texture backgroundTexture;
 	backgroundTexture.loadFromFile("assets\\w-background.jpg");
 	sf::Sprite background(backgroundTexture);
@@ -211,9 +226,9 @@ void Shogi::play()
 	boardTexture.loadFromFile("assets\\board.png");
 	sf::Sprite board(boardTexture);
 
-	window.draw(background);
-	window.draw(board);
-	window.display();
+	//window.draw(background);
+	//window.draw(board);
+	//window.display();
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -227,7 +242,8 @@ void Shogi::play()
 			do
 			{
 				B->printBoard();
-				printText();
+				//printText();
+				for (auto& i : PlayersArr) i.drawPrison();
 				window.display();
 				Pos tgtPos;
 				Pos srcPos;
@@ -247,6 +263,8 @@ void Shogi::play()
 				} while (!isValidSelect(srcPos));
 				B->printBoard();
 				B->highLightMoves(srcPos);
+				//printText();
+				for (auto& i : PlayersArr) i.drawPrison();
 				window.display();
 				do
 				{

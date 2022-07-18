@@ -139,34 +139,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Bishop.cpp" />
     <ClCompile Include="Board.cpp" />
-    <ClCompile Include="GoldenGeneral.cpp" />
-    <ClCompile Include="King.cpp" />
-    <ClCompile Include="Knight.cpp" />
-    <ClCompile Include="Lance.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Pawn.cpp" />
-    <ClCompile Include="Piece.cpp" />
+    <ClCompile Include="Pieces\src\Bishop.cpp" />
+    <ClCompile Include="Pieces\src\GoldenGeneral.cpp" />
+    <ClCompile Include="Pieces\src\King.cpp" />
+    <ClCompile Include="Pieces\src\Knight.cpp" />
+    <ClCompile Include="Pieces\src\Lance.cpp" />
+    <ClCompile Include="Pieces\src\Pawn.cpp" />
+    <ClCompile Include="Pieces\src\Piece.cpp" />
+    <ClCompile Include="Pieces\src\Rook.cpp" />
+    <ClCompile Include="Pieces\src\SilverGeneral.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Rook.cpp" />
+    <ClCompile Include="Prison.cpp" />
     <ClCompile Include="Shogi.cpp" />
-    <ClCompile Include="SilverGeneral.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Bishop.h" />
     <ClInclude Include="Board.h" />
-    <ClInclude Include="GoldenGeneral.h" />
-    <ClInclude Include="King.h" />
-    <ClInclude Include="Knight.h" />
-    <ClInclude Include="Lance.h" />
-    <ClInclude Include="Pawn.h" />
-    <ClInclude Include="Piece.h" />
+    <ClInclude Include="Pieces\headers\Bishop.h" />
+    <ClInclude Include="Pieces\headers\GoldenGeneral.h" />
+    <ClInclude Include="Pieces\headers\King.h" />
+    <ClInclude Include="Pieces\headers\Knight.h" />
+    <ClInclude Include="Pieces\headers\Lance.h" />
+    <ClInclude Include="Pieces\headers\Pawn.h" />
+    <ClInclude Include="Pieces\headers\Piece.h" />
+    <ClInclude Include="Pieces\headers\Rook.h" />
+    <ClInclude Include="Pieces\headers\SilverGeneral.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="Rook.h" />
+    <ClInclude Include="Prison.h" />
     <ClInclude Include="Shogi.h" />
-    <ClInclude Include="SilverGeneral.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>

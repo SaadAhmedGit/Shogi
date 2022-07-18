@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "Utility.h"
-#include "Pawn.h"
+#include "Pieces/headers/Pawn.h"
 
 class Board;
 class Player;

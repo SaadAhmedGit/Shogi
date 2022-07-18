@@ -1,5 +1,5 @@
-#include "Piece.h"
-#include "Board.h"
+#include "../headers/Piece.h"
+#include "../../Board.h"
 
 bool Piece::isDiagonal(Pos tgt) const
 {

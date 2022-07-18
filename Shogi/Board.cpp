@@ -2,14 +2,15 @@
 #include <fstream>
 
 #include "Board.h"
-#include "Pawn.h"
-#include "King.h"
-#include "Bishop.h"
-#include "Lance.h"
-#include "Rook.h"
-#include "GoldenGeneral.h"
-#include "SilverGeneral.h"
-#include "Knight.h"
+//Pieces
+#include "Pieces/headers/Pawn.h"
+#include "Pieces/headers/King.h"
+#include "Pieces/headers/Bishop.h"
+#include "Pieces/headers/Lance.h"
+#include "Pieces/headers/Rook.h"
+#include "Pieces/headers/GoldenGeneral.h"
+#include "Pieces/headers/SilverGeneral.h"
+#include "Pieces/headers/Knight.h"
 
 Board::Board(sf::RenderWindow* windowPtr)
 	:winP(windowPtr)
@@ -95,12 +96,12 @@ void Board::highLightMoves(Pos srcPiece)
 				{
 					if ((*this)[{i, j}]->getTeam() != (*this)[srcPiece]->getTeam())
 					{
-						redHighlightSprite.setPosition((j * 96) + 56, (i * 96) + 56);
+						redHighlightSprite.setPosition((j * 96) + (BOARD_X + 56), (i * 96) + (BOARD_Y + 56));
 						winP->draw(redHighlightSprite);
 						continue;
 					}
 				}
-				greenHighlightSprite.setPosition((j * 96) + 56, (i * 96) + 56);
+				greenHighlightSprite.setPosition((j * 96) + (BOARD_X + 56), (i * 96) + (BOARD_Y + 56));
 				winP->draw(greenHighlightSprite);
 			}
 		}
@@ -118,7 +119,7 @@ void Board::printBoard()
 	sf::Texture boardTexture;
 	boardTexture.loadFromFile("assets\\board.png");
 	sf::Sprite board(boardTexture);
-	board.setPosition(0, 0);
+	board.setPosition(BOARD_X, BOARD_Y);
 	this->getWinPtr()->draw(board);
 
 	for (int i = 0; i < 9; i++)
