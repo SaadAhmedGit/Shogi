@@ -25,7 +25,7 @@ Board::Board(sf::RenderWindow* windowPtr)
 			piecesArr.push_back({});
 			char sym = 0;
 			setupFile >> sym;
-			Color team = (sym >= 'a' && sym <= 'z' ? BLACK : WHITE);
+			Team team = (sym >= 'a' && sym <= 'z' ? BLACK : WHITE);
 			switch (tolower(sym))
 			{
 				case 'p':
@@ -75,17 +75,17 @@ void Board::movePiece(const Pos src, const Pos dest)
 	(*this)[src] = nullptr;
 }
 
+sf::Texture Board::green_h;
+sf::Texture Board::red_h;
+sf::Texture Board::boardTexture;
+
 void Board::highLightMoves(Pos srcPiece)
 {
 	if ((*this)[srcPiece] == nullptr) return;
-	sf::Texture greenHighlight;
-	sf::Texture redHighlight;
-	redHighlight.loadFromFile("assets\\red-h.png");
-	greenHighlight.loadFromFile("assets\\green-h.png");
-	sf::Sprite greenHighlightSprite(greenHighlight);
-	sf::Sprite redHighlightSprite(redHighlight);
+	sf::Sprite greenSprite(green_h);
+	sf::Sprite redSprite(red_h);
 
-	std::vector<std::vector<bool>> validMoves = (*this)[srcPiece]->getValidMoves();
+	auto validMoves = (*this)[srcPiece]->getValidMoves();
 	for (int i = 0; i < 9; i++)
 	{
 		for (int j = 0; j < 9; j++)
@@ -96,13 +96,13 @@ void Board::highLightMoves(Pos srcPiece)
 				{
 					if ((*this)[{i, j}]->getTeam() != (*this)[srcPiece]->getTeam())
 					{
-						redHighlightSprite.setPosition((j * 96) + (BOARD_X + 56), (i * 96) + (BOARD_Y + 56));
-						winP->draw(redHighlightSprite);
+						redSprite.setPosition((j * 96) + (BOARD_X + 56), (i * 96) + (BOARD_Y + 56));
+						winP->draw(redSprite);
 						continue;
 					}
 				}
-				greenHighlightSprite.setPosition((j * 96) + (BOARD_X + 56), (i * 96) + (BOARD_Y + 56));
-				winP->draw(greenHighlightSprite);
+				greenSprite.setPosition((j * 96) + (BOARD_X + 56), (i * 96) + (BOARD_Y + 56));
+				winP->draw(greenSprite);
 			}
 		}
 	}
@@ -111,13 +111,6 @@ void Board::highLightMoves(Pos srcPiece)
 
 void Board::printBoard()
 {
-	sf::Texture backgroundTexture;
-	backgroundTexture.loadFromFile("assets\\w-background.jpg");
-	sf::Sprite background(backgroundTexture);
-	this->getWinPtr()->draw(background);
-
-	sf::Texture boardTexture;
-	boardTexture.loadFromFile("assets\\board.png");
 	sf::Sprite board(boardTexture);
 	board.setPosition(BOARD_X, BOARD_Y);
 	this->getWinPtr()->draw(board);
@@ -132,7 +125,7 @@ void Board::printBoard()
 	}
 }
 
-Pos Board::findKing(Color team)
+Pos Board::findKing(Team team)
 {
 	for (int i = 0; i < 9; i++)
 	{
@@ -149,5 +142,5 @@ Pos Board::findKing(Color team)
 
 Piece*& Board::operator[](const Pos p)
 {
-	return piecesArr[p.r][p.c];
+	return piecesArr[p.y][p.x];
 }

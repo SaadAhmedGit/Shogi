@@ -4,10 +4,10 @@
 #define BOARD_X 476
 #define BOARD_Y 0
 
-const enum Color { BLACK = 0, WHITE = 15 };
+const enum Team { BLACK = 1, WHITE = 0 };
 struct Pos
 {
-	int r, c;
-	Pos() :r(0), c(0) {}
-	Pos(int _r, int _c) :r(_r), c(_c) {}
+	int y, x;
+	Pos() :y(0), x(0) {}
+	Pos(int _y, int _x) :y(_y), x(_x) {}
 };

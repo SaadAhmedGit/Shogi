@@ -13,12 +13,15 @@ private:
 	bool turn;
 	sf::RenderWindow window;
 	std::vector<Player> PlayersArr;
-	static sf::Font font;
-	static sf::Texture promoTexture;
 	Board* B;
 
+	//Static
+	static sf::Texture bgTexture;
+	static sf::Texture promoTexture;
+	static sf::Font font;
+
 	//Helpers
-	Pos pickOnBoard(sf::RenderWindow& window, sf::Event& event);
+	Pos mapToBoard(Pos raw);
 	bool isValidSelect(Pos tgt) const;
 	bool isValidDest(Pos tgt) const;
 	void printText();
@@ -26,7 +29,11 @@ private:
 	bool selfCheck();
 	bool checkMate();
 	bool prompt();
+	bool liesInPrison(Pos raw);
 	Pos mouseL();
+	void drawBackground();
+	std::vector<std::vector<bool>> computeDropZones(Piece* prisoner);
+	void highlightForDrop(std::vector<std::vector<bool>>& dropZones);
 
 public:
 	Shogi();
@@ -34,4 +41,3 @@ public:
 	~Shogi();
 	void play();
 };
-

@@ -3,73 +3,72 @@
 
 bool Piece::isDiagonal(Pos tgt) const
 {
-	return abs(tgt.r - this->pos.r) == abs(tgt.c - this->pos.c);
+	return  abs(tgt.y - this->pos.y) != 0 && abs(tgt.y - this->pos.y) == abs(tgt.x - this->pos.x);
 }
 
 bool Piece::isDiagClear(Pos tgt) const
 {
-	Pos dir = { 0,0 };
-	dir.r = (tgt.r > pos.r ? 1 : -1);
-	dir.c = (tgt.c > pos.c ? 1 : -1);
+	Pos dir = pos;
+	dir.y = (tgt.y > pos.y ? 1 : -1);
+	dir.x = (tgt.x > pos.x ? 1 : -1);
 
-	Pos i = { pos.r + dir.r, pos.c + dir.c };
-
-	while (abs(i.r - tgt.r) > 0)
+	Pos i = { pos.y + dir.y, pos.x + dir.x };
+	while (abs(i.y - tgt.y) > 0)
 	{
 		if ((*B)[i] != nullptr)
 			return false;
 
-		i.r += dir.r;
-		i.c += dir.c;
+		i.y += dir.y;
+		i.x += dir.x;
 	}
 	return true;
 }
 
 bool Piece::isVertical(Pos tgt) const
 {
-	return pos.c == tgt.c;
+	return pos.x == tgt.x;
 }
 
 bool Piece::isVertClear(Pos tgt) const
 {
 	Pos dir = { 0,0 };
-	dir.r = (tgt.r > pos.r ? 1 : -1);
+	dir.y = (tgt.y > pos.y ? 1 : -1);
 
-	Pos i = { pos.r + dir.r, pos.c };
+	Pos i = { pos.y + dir.y, pos.x };
 
-	while (abs(i.r - tgt.r) > 0)
+	while (abs(i.y - tgt.y) > 0)
 	{
 		if ((*B)[i] != nullptr)
 			return false;
 
-		i.r += dir.r;
+		i.y += dir.y;
 	}
 	return true;
 }
 
 bool Piece::isHorizontal(Pos tgt) const
 {
-	return pos.r == tgt.r;
+	return pos.y == tgt.y;
 }
 
 bool Piece::isHorizClear(Pos tgt) const
 {
 	Pos dir = { 0,0 };
-	dir.c = (tgt.c > pos.c ? 1 : -1);
+	dir.x = (tgt.x > pos.x ? 1 : -1);
 
-	Pos i = { pos.r, pos.c + dir.c };
+	Pos i = { pos.y, pos.x + dir.x };
 
-	while (abs(i.c - tgt.c) > 0)
+	while (abs(i.x - tgt.x) > 0)
 	{
 		if ((*B)[i] != nullptr)
 			return false;
 
-		i.c += dir.c;
+		i.x += dir.x;
 	}
 	return true;
 }
 
-Piece::Piece(const Pos _pos, const Color _team, Board* const  _B, bool _isPromoted)
+Piece::Piece(const Pos _pos, const Team _team, Board* const  _B, bool _isPromoted)
 	:pos(_pos), team(_team), B(_B), isPromoted(_isPromoted)
 {
 }
@@ -93,9 +92,9 @@ bool Piece::isPromotable() const
 	if (!isPromoted)
 	{
 		if (team == WHITE)
-			return pos.r < 3;
+			return pos.y < 3;
 		else
-			return pos.r > 5;
+			return pos.y > 5;
 	}
 	return false;
 }
@@ -129,7 +128,12 @@ Pos Piece::getPos() const
 	return this->pos;
 }
 
-Color Piece::getTeam() const
+Team Piece::getTeam() const
 {
 	return this->team;
+}
+
+void Piece::setTeam(Team _team)
+{
+	team = _team;
 }

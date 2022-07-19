@@ -3,14 +3,14 @@
 
 sf::Texture King::textureW;
 sf::Texture King::textureB;
-King::King(Pos _pos, Color _team, Board* _B)
+King::King(Pos _pos, Team _team, Board* _B)
 	:Piece(_pos, _team, _B)
 {
 }
 
 bool King::isValidMove(Pos tgtPos) const
 {
-	return abs(tgtPos.r - pos.r) <= 1 && abs(tgtPos.c - pos.c) <= 1;
+	return abs(tgtPos.y - pos.y) <= 1 && abs(tgtPos.x - pos.x) <= 1;
 }
 
 bool King::isPromotable() const
@@ -35,7 +35,7 @@ void King::draw() const
 	}
 
 	sprite.setOrigin({ imgDim.x / 2, imgDim.y / 2 });
-	sprite.setPosition((pos.c * 96) + (BOARD_X + 98), (pos.r * 96) + (BOARD_Y + 98));
+	sprite.setPosition((pos.x * 96) + (BOARD_X + 98), (pos.y * 96) + (BOARD_Y + 98));
 	sprite.setScale({ 0.4,0.4 });
 	this->B->getWinPtr()->draw(sprite);
 }

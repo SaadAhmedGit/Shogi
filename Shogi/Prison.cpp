@@ -41,7 +41,7 @@ void Prison::addPrisoner(Piece* prisoner)
 
 }
 
-Piece* Prison::getPrisoner(const int cellNo)
+Piece* Prison::freePrisoner(const int cellNo)
 {
 	//Can reduce the boiler-plate code here but just want to have it working for now
 	if (count[cellNo] > 0)
@@ -100,6 +100,11 @@ Piece* Prison::getPrisoner(const int cellNo)
 	}
 	else
 		return nullptr;
+}
+
+Piece* Prison::peekPrisoner(const int cellNo)
+{
+	return cells[cellNo];
 }
 
 void Prison::draw()

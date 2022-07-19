@@ -15,13 +15,13 @@ private:
 	sf::RenderWindow* winPtr;
 
 	//Graphics stuff
-	sf::Vector2i corner;
 public:
+	sf::Vector2i corner;
 	Prison(sf::Vector2i _corner, sf::RenderWindow* _winPtr);
 	void addPrisoner(Piece* prisoner);
-	Piece* getPrisoner(const int cellNo);
+	Piece* freePrisoner(const int cellNo);
+	Piece* peekPrisoner(const int cellNo);
 	void draw();
-
 	static sf::Texture texture;
 
 };
