@@ -9,5 +9,6 @@ public:
 	virtual bool isValidMove(Pos tgtPos) const;
 	virtual void draw() const;
 	virtual void drawInPrison(sf::Vector2i corner, const int cellNo) const;
+	virtual int getScore() const override;
 };
 

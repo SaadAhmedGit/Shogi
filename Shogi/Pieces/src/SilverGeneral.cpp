@@ -38,14 +38,14 @@ void SilverGeneral::draw() const
 	sprite.setOrigin({ imgCenter.x / 2, imgCenter.y / 2 });
 	if (team == BLACK)	sprite.setRotation(180);
 	sprite.setPosition((pos.x * 96) + (BOARD_X + 98), (pos.y * 96) + (BOARD_Y + 98));
-	sprite.setScale({ 0.4,0.4 });
+	sprite.setScale({ 0.6,0.6 });
 	this->B->getWinPtr()->draw(sprite);
 }
 
 void SilverGeneral::drawInPrison(sf::Vector2i corner, const int cellNo) const
 {
 	sf::Sprite sprite(texture);
-	sprite.setPosition(corner.x + 8, corner.y + (98 * cellNo) + 16);
-	sprite.setScale(0.4, 0.4);
+	sprite.setPosition(corner.x + 13, corner.y + (98 * cellNo) + 5);
+	sprite.setScale(0.6, 0.6);
 	this->B->getWinPtr()->draw(sprite);
 }

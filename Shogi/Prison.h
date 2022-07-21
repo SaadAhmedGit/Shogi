@@ -21,6 +21,7 @@ public:
 	void addPrisoner(Piece* prisoner);
 	Piece* freePrisoner(const int cellNo);
 	Piece* peekPrisoner(const int cellNo);
+	int getCountOf(const int cellNo);
 	void draw();
 	static sf::Texture texture;
 

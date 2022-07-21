@@ -1,7 +1,9 @@
 #include "Player.h"
+#include "Board.h"
+#include "Pieces/headers/Piece.h"
 
-Player::Player(const std::string& _name, Team _team, const Prison& _prison)
-	:name(_name), team(_team), prison(_prison)
+Player::Player(const std::string& _name, Team _team, const Prison& _prison, Board* _B)
+	:name(_name), team(_team), prison(_prison), B(_B)
 {
 }
 
@@ -12,6 +14,27 @@ Team Player::getTeam() const
 void Player::drawPrison()
 {
 	prison.draw();
+}
+int Player::computeScore()
+{
+	int score = 0;
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			if ((*B)[{i, j}] != nullptr
+				&& (*B)[{i, j}]->getTeam() == team)
+			{
+				score += (*B)[{i, j}]->getScore();
+			}
+		}
+	}
+	for (int i = 0; i < 7; i++)
+	{
+		if (prison.peekPrisoner(i) != nullptr)
+			score += prison.peekPrisoner(i)->getScore() * prison.getCountOf(i);
+	}
+	return score;
 }
 Piece* Player::freePrisoner(int cellNo)
 {
@@ -31,6 +54,7 @@ sf::Vector2i Player::getPrisonCorner()
 }
 void Player::capture(Piece* prisoner)
 {
+	prisoner->setTeam(team);
 	prison.addPrisoner(prisoner);
 }
 std::string Player::getTeamName() const

@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <conio.h>
 #include <SFML/Graphics.hpp>
 
@@ -49,12 +49,23 @@ void Shogi::printText()
 	sf::Text text;
 	text.setFont(font);
 	text.setString(PlayersArr[0].getName());
-	text.setFillColor(sf::Color::White);
+	text.setOrigin(0, 0);
+	if (!turn)
+		text.setFillColor(sf::Color::Green);
+	else
+		text.setFillColor(sf::Color::White);
 	text.setCharacterSize(56);
-	text.setPosition({ 1000, 150 });
+	auto Pcorner = PlayersArr[0].getPrisonCorner();
+	text.setPosition(Pcorner.x - 10, 150);
 	window.draw(text);
 	text.setString(PlayersArr[1].getName());
-	text.setPosition({ 1000, 225 });
+	Pcorner = PlayersArr[1].getPrisonCorner();
+
+	text.setPosition(Pcorner.x - 80, 150);
+	if (turn)
+		text.setFillColor(sf::Color::Green);
+	else
+		text.setFillColor(sf::Color::White);
 	window.draw(text);
 }
 
@@ -83,6 +94,16 @@ bool Shogi::selfCheck()
 	bool doesEnemyCheck = Check();
 	turn = !turn;
 	return doesEnemyCheck;
+}
+
+bool Shogi::didYouRighClick()
+{
+
+	while (window.pollEvent(event))
+	{
+		;//switch (event)
+	}
+	return false;
 }
 
 bool Shogi::checkMate()
@@ -148,8 +169,8 @@ bool Shogi::liesInPrison(Pos raw)
 
 Pos Shogi::mouseL()
 {
-	sf::Event event;
 	Pos raw{ -1,-1 };
+	sf::Event event;
 	while (window.pollEvent(event) || (raw.x == -1 && raw.y == -1))
 	{
 		switch (event.type)
@@ -165,6 +186,10 @@ Pos Shogi::mouseL()
 					raw.x = posV.x;
 					return raw;
 				}
+				else if (event.mouseButton.button == sf::Mouse::Right)
+				{
+					return { -1,-1 };
+				}
 				break;
 			default:
 				break;
@@ -178,6 +203,96 @@ void Shogi::drawBackground()
 	background.setTexture(bgTexture);
 	background.setPosition({ 0, 0 });
 	window.draw(background);
+}
+
+void Shogi::jishogi()
+{
+	Pos wKingPos = B->findKing(WHITE);
+	Pos bKingPos = B->findKing(BLACK);
+	if (wKingPos.y < 3 && bKingPos.y > 5)
+	{
+		int wScore = PlayersArr[0].computeScore();
+		int bScore = PlayersArr[1].computeScore();
+		if (wScore < 24 && bScore < 24)
+		{
+			std::cout << "DRAW\n";
+		}
+		else if (bScore < 24)
+		{
+			std::cout << "WHITE won\n";
+		}
+		else if (wScore < 24)
+		{
+			std::cout << "BLACK won\n";
+		}
+		else
+		{
+			std::cout << "DRAW\n";
+		}
+	}
+}
+
+sf::Texture Shogi::menu;
+std::string Shogi::inputNames(int colPixel, const std::string& p1Name)
+{
+	sf::Sprite menuSprite(Shogi::menu);
+	menuSprite.setPosition({ 0,0 });
+	window.draw(menuSprite);
+
+	std::string input;
+	sf::Text nameText;
+	sf::Text p1NameText;
+	p1NameText.setFont(font);
+	p1NameText.setString(p1Name);
+	p1NameText.setCharacterSize(56);
+	p1NameText.setPosition(730, 465);
+	nameText.setFont(font);
+	nameText.setCharacterSize(56);
+	nameText.setPosition(730, colPixel);
+	nameText.setFillColor(sf::Color::White);
+	window.draw(p1NameText);
+	window.display();
+	while (window.isOpen())
+	{
+		bool didBreak = false;
+
+		while (window.pollEvent(event))
+		{
+			switch (event.type)
+			{
+				case sf::Event::Closed:
+					window.close();
+					break;
+				case sf::Event::KeyPressed:
+					if (event.key.code == sf::Keyboard::Return)
+						didBreak = true;
+					break;
+				case sf::Event::TextEntered:
+					if (event.text.unicode == '\b')
+					{
+						if (input.size() > 0)
+						{
+							input.pop_back();
+						}
+					}
+					else
+					{
+						input += static_cast<char>(event.text.unicode);
+					}
+					nameText.setString(input);
+					window.clear();
+					window.draw(menuSprite);
+					window.draw(p1NameText);
+					window.draw(nameText);
+					window.display();
+					break;
+				default:
+					break;
+			}
+		}
+		if (didBreak) break;
+	}
+	return input;
 }
 
 std::vector<std::vector<bool>> Shogi::computeDropZones(Piece* prisoner)
@@ -209,6 +324,7 @@ std::vector<std::vector<bool>> Shogi::computeDropZones(Piece* prisoner)
 	}
 	bool isPawn = dynamic_cast<Pawn*>(prisoner);
 	if (isPawn)
+	{
 		for (int i = 0; i < 9; i++)
 		{
 			for (int j = 0; j < 9; j++)
@@ -216,12 +332,32 @@ std::vector<std::vector<bool>> Shogi::computeDropZones(Piece* prisoner)
 				if ((*B)[{i, j}] != nullptr) continue;
 				prisoner->move({ i,j });
 				(*B)[{i, j}] = prisoner;
+				turn = !turn;
 				if (checkMate())
 					dropZones[i][j] = 0;
+				turn = !turn;
 				(*B)[{i, j}] = nullptr;
+
+
 
 			}
 		}
+		//Zero out the column having your own unpromoted pawn
+		for (int i = 0; i < 9; i++)
+		{
+			for (int j = 0; j < 9; j++)
+			{
+				if ((*B)[{i, j}] == nullptr) continue;
+				auto pawnOnCol = dynamic_cast<Pawn*> ((*B)[{i, j}]);
+				if (pawnOnCol && (pawnOnCol->getTeam() == PlayersArr[turn].getTeam())
+					&& !(pawnOnCol->promoStatus()))
+				{
+					for (int r = 0; r < 9; r++) dropZones[r][j] = 0;
+				}
+			}
+		}
+
+	}
 	return dropZones;
 }
 
@@ -242,19 +378,24 @@ void Shogi::highlightForDrop(std::vector<std::vector<bool>>& dropZones)
 }
 
 Shogi::Shogi()
-	: window(sf::VideoMode(1920, 1080), "Shogi", sf::Style::Titlebar), B(new Board{ &(this->window) }), turn(WHITE)
+	: window(sf::VideoMode(1920, 1080), "Space Shogi", sf::Style::Titlebar), B(new Board{ &(this->window) }), turn(WHITE)
 {
+	this->loadAssets();
+	font.loadFromFile("assets/fonts/Azonix.ttf");
 	window.setPosition({ -10,0 });
-	Player p1("Saad", WHITE,
+	auto name1 = inputNames(465);
+	Player p1(name1, WHITE,
 			  {
 				  {(BOARD_X + 968) + 100, 240},
 				  &window
-			  });
-	Player p2("Zoraz", BLACK,
+			  }, B);
+
+	auto name2 = inputNames(630, name1);
+	Player p2(name2, BLACK,
 			  {
 				  {BOARD_X - (100 + 98), 240},
 				  &window
-			  });
+			  }, B);
 	PlayersArr.push_back(p1);
 	PlayersArr.push_back(p2);
 }
@@ -285,13 +426,14 @@ void Shogi::loadAssets()
 	Knight::texture.loadFromFile("assets/Knight.png");
 	Knight::texture_p.loadFromFile("assets/Knight-p.png");
 	//Misc
-	Shogi::font.loadFromFile("assets/fonts/times.ttf");
+	Shogi::font.loadFromFile("assets/fonts/Azonix.ttf");
 	Shogi::promoTexture.loadFromFile("assets/promo-prompt.png");
 	Prison::texture.loadFromFile("assets/prison.png");
 	Board::green_h.loadFromFile("assets/green-h.png");
 	Board::red_h.loadFromFile("assets/red-h.png");
-	Board::boardTexture.loadFromFile("assets/board.png");
+	Board::boardTexture.loadFromFile("assets/board-c.png");
 	Shogi::bgTexture.loadFromFile("assets/w-background.jpg");
+	Shogi::menu.loadFromFile("assets/menu.png");
 }
 
 Shogi::~Shogi()
@@ -312,7 +454,6 @@ void Shogi::play()
 
 	while (window.isOpen())
 	{
-		sf::Event event;
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
@@ -324,24 +465,26 @@ void Shogi::play()
 			{
 				drawBackground();
 				B->printBoard();
-				//printText();
+				printText();
 				for (auto& i : PlayersArr) i.drawPrison();
 				window.display();
-				Pos tgtPos;
-				Pos srcPos;
-				Pos raw;
+				static Pos tgtPos;
+				static Pos srcPos;
+				static Pos raw;
 				if (checkMate())
 				{
 					//TODO: Display output on window
 					std::cout << "CHECKMATE\n";
-					while (window.pollEvent(event))
+					while (window.pollEvent(event) || true)
 					{
 
 					}
 				}
 				int cellNo = -1;
+				std::vector<std::vector<bool>> dropZones;
 				do
 				{
+				deselected:
 					raw = mouseL();
 					if (liesInPrison(raw))
 					{
@@ -357,42 +500,62 @@ void Shogi::play()
 				B->printBoard();
 				if (cellNo > -1)
 				{
-					auto dropZones = computeDropZones(PlayersArr[turn].peekPrisoner(cellNo));
+					dropZones = computeDropZones(PlayersArr[turn].peekPrisoner(cellNo));
 					highlightForDrop(dropZones);
 				}
 				else
 					B->highLightMoves(srcPos);
-				//printText();
+				printText();
 				window.display();
 				do
 				{
-					raw = mouseL();
-					tgtPos = mapToBoard(raw);
-					if (cellNo > -1)
+					bool didBreak = false;
+					do
 					{
-						if (isValidDest(tgtPos))
+						raw = mouseL();
+						if (raw.x == -1 && raw.y == -1)
 						{
-							//Drop according to legality criteria
-							Piece* droppedPiece = PlayersArr[turn].freePrisoner(cellNo);
-							droppedPiece->move(tgtPos);
-							(*B)[{tgtPos}] = droppedPiece;
-							droppedPiece->setTeam(PlayersArr[turn].getTeam());
-							break;
+							drawBackground();
+							for (auto& i : PlayersArr) i.drawPrison();
+							B->printBoard();
+							printText();
+							window.display();
+							cellNo = -1;
+							goto deselected;
 						}
-						else
-							continue;
-					}
+						tgtPos = mapToBoard(raw);
+						if (cellNo > -1)
+						{
+							if (isValidDest(tgtPos) && dropZones[tgtPos.y][tgtPos.x])
+							{
+								Piece* droppedPiece = PlayersArr[turn].freePrisoner(cellNo);
+								droppedPiece->move(tgtPos);
+								(*B)[{tgtPos}] = droppedPiece;
+								didBreak = true;
+								break;
+							}
+							else
+								continue;
+						}
+						didBreak = true;
+						break;
+					} while (true);
+					if (didBreak) break;
 
 				} while (!isValidDest(tgtPos) || !(*B)[srcPos]->isValidMove(tgtPos));
 				if (cellNo < 0)
 				{
 					if ((*B)[{tgtPos}] != nullptr)
+					{
+						(*B)[{tgtPos}]->demote();
 						PlayersArr[turn].capture((*B)[{tgtPos}]);
+					}
 					B->movePiece(srcPos, tgtPos);
+					jishogi();
 					if ((*B)[tgtPos]->isPromotable() && prompt())
 						(*B)[tgtPos]->promote();
 				}
-				//turn = !turn;
+				turn = !turn;
 			} while (true);
 		}
 	}

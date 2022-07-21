@@ -107,13 +107,28 @@ Piece* Prison::peekPrisoner(const int cellNo)
 	return cells[cellNo];
 }
 
+int Prison::getCountOf(const int cellNo)
+{
+	return count[cellNo];
+}
+
 void Prison::draw()
 {
 	sf::Sprite prisonSprite(texture);
 	prisonSprite.setPosition(static_cast<sf::Vector2f>(corner));
+	sf::Font timeNewRoman;
+	timeNewRoman.loadFromFile("assets/fonts/digital-7.ttf");
+	sf::Text countText;
+	countText.setCharacterSize(32);
+	countText.setFillColor(sf::Color::Red);
+	countText.setFont(timeNewRoman);
 	winPtr->draw(prisonSprite);
 	for (int i = 0; i < 7; i++)
 	{
+		countText.setString(std::to_string(count[i]));
+		countText.setPosition(corner.x + 120, corner.y + (98 * i) + 25);
+		winPtr->draw(countText);
+
 		if (cells[i] != nullptr)
 			cells[i]->drawInPrison(corner, i);
 	}

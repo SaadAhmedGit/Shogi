@@ -23,11 +23,14 @@ public:
 	virtual bool isValidMove(Pos tgtPos) const = 0;
 	void move(Pos newPos);
 	void promote();
-	virtual bool isPromotable() const;
+	void demote();
+	virtual bool isPromotable();
 	std::vector<std::vector<bool>> getValidMoves() const;
 	virtual void draw() const = 0;
 	virtual void drawInPrison(sf::Vector2i corner, const int cellNo) const = 0;
 	Pos getPos() const;
 	Team getTeam() const;
 	void setTeam(Team _team);
+	bool promoStatus() const;
+	virtual int getScore() const;
 };

@@ -87,26 +87,55 @@ void Piece::promote()
 	isPromoted = true;
 }
 
-bool Piece::isPromotable() const
+void Piece::demote()
+{
+	isPromoted = false;
+}
+
+bool Piece::isPromotable()
 {
 	if (!isPromoted)
 	{
-		if (team == WHITE)
-			return pos.y < 3;
+		auto legalMap = this->getValidMoves();
+		bool didBreak = false;
+		for (const auto& row : legalMap)
+		{
+			for (const auto& col : row)
+			{
+				if (col)
+				{
+					didBreak = true;
+					break;
+				}
+			}
+			if (didBreak) break;
+		}
+		if (!didBreak)
+		{
+			if (team == WHITE && pos.y < 3)
+				isPromoted = true;
+			else if (team == BLACK && pos.y > 5)
+				isPromoted = true;
+			return false;
+		}
 		else
-			return pos.y > 5;
+		{
+			if (team == WHITE)
+				return pos.y < 3;
+			else
+				return pos.y > 5;
+		}
 	}
 	return false;
 }
 
 std::vector<std::vector<bool>> Piece::getValidMoves() const
 {
-	std::vector<std::vector<bool>> validMoves;
+	std::vector<std::vector<bool>> validMoves(9, std::vector<bool>(9, 0));
 	for (int i = 0; i < 9; i++)
 	{
 		for (int j = 0; j < 9; j++)
 		{
-			validMoves.push_back(std::vector<bool>(9));
 			if ((*B)[{i, j}] == nullptr && this->isValidMove({ i, j }))
 			{
 				validMoves[i][j] = true;
@@ -136,4 +165,14 @@ Team Piece::getTeam() const
 void Piece::setTeam(Team _team)
 {
 	team = _team;
+}
+
+bool Piece::promoStatus() const
+{
+	return this->isPromoted;
+}
+
+int Piece::getScore() const
+{
+	return 1;
 }

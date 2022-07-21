@@ -13,7 +13,7 @@ bool King::isValidMove(Pos tgtPos) const
 	return abs(tgtPos.y - pos.y) <= 1 && abs(tgtPos.x - pos.x) <= 1;
 }
 
-bool King::isPromotable() const
+bool King::isPromotable()
 {
 	return false;
 }
@@ -36,11 +36,16 @@ void King::draw() const
 
 	sprite.setOrigin({ imgDim.x / 2, imgDim.y / 2 });
 	sprite.setPosition((pos.x * 96) + (BOARD_X + 98), (pos.y * 96) + (BOARD_Y + 98));
-	sprite.setScale({ 0.4,0.4 });
+	sprite.setScale({ 0.6,0.6 });
 	this->B->getWinPtr()->draw(sprite);
 }
 
 void King::drawInPrison(sf::Vector2i corner, const int cellNo) const
 {
 	return;
+}
+
+int King::getScore() const
+{
+	return 0;
 }
