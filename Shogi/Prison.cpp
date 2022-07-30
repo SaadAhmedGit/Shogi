@@ -107,6 +107,71 @@ Piece* Prison::peekPrisoner(const int cellNo)
 	return cells[cellNo];
 }
 
+void Prison::load(std::ifstream& prisonFile, Board* B)
+{
+	int curr_count = 0;
+	for (int i = 0; i < 7; i++)
+	{
+		prisonFile >> curr_count;
+		if (i == 0)
+		{
+			if (curr_count > 0)
+			{
+				cells[i] = new Pawn{ {}, WHITE,  B };
+				count[i] = curr_count;
+			}
+		}
+		else if (i == 1)
+		{
+			if (curr_count > 0)
+			{
+				cells[i] = new Lance{ {}, WHITE,  B };
+				count[i] = curr_count;
+			}
+		}
+		else if (i == 2)
+		{
+			if (curr_count > 0)
+			{
+				cells[i] = new Knight{ {}, WHITE,  B };
+				count[i] = curr_count;
+			}
+		}
+		else if (i == 3)
+		{
+			if (curr_count > 0)
+			{
+				cells[i] = new GoldenGeneral{ {}, WHITE,  B };
+				count[i] = curr_count;
+			}
+		}
+		else if (i == 4)
+		{
+			if (curr_count > 0)
+			{
+				cells[i] = new SilverGeneral{ {}, WHITE, B };
+				count[i] = curr_count;
+			}
+		}
+		else if (i == 5)
+		{
+			if (curr_count > 0)
+			{
+				cells[i] = new Bishop{ {}, WHITE,  B };
+				count[i] = curr_count;
+			}
+		}
+		else if (i == 6)
+		{
+			if (curr_count > 0)
+			{
+				cells[i] = new Rook{ {}, WHITE,  B };
+				count[i] = curr_count;
+			}
+		}
+	}
+}
+
 int Prison::getCountOf(const int cellNo)
 {
 	return count[cellNo];

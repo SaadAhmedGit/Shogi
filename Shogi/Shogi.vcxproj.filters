@@ -112,11 +112,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="dfltSetup.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="assets\background.png">
       <Filter>Resource Files</Filter>
     </Image>
@@ -132,5 +127,16 @@
     <Image Include="assets\board.png">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="new_game-s.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="new_game-p.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="new_game-prison.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

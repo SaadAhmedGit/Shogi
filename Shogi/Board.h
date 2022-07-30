@@ -15,7 +15,7 @@ public:
 	static sf::Texture green_h;
 	static sf::Texture red_h;
 	static sf::Texture boardTexture;
-	Board(sf::RenderWindow* windowPtr);
+	Board(sf::RenderWindow* windowPtr, const std::string& boardFile);
 	~Board();
 	sf::RenderWindow* getWinPtr();
 	void movePiece(const Pos src, const Pos dest);

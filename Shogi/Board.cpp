@@ -12,48 +12,64 @@
 #include "Pieces/headers/SilverGeneral.h"
 #include "Pieces/headers/Knight.h"
 
-Board::Board(sf::RenderWindow* windowPtr)
-	:winP(windowPtr)
+Board::Board(sf::RenderWindow* windowPtr, const std::string& boardFile)
+	:winP(windowPtr), piecesArr(9, std::vector<Piece*>(9, 0))
 {
-	std::ifstream setupFile("dfltSetup.txt");
-	if (!setupFile.is_open())
-		throw std::exception("The dfltSetup.dat file is either corrupted or not present. Please re-install the game");
+	std::ifstream setupFile(boardFile + "-s.txt");
+	std::ifstream promotionFile(boardFile + "-p.txt");
+	if (!promotionFile.is_open()) throw "Nigga";
+
 	for (int i = 0; i < 9; i++)
 	{
 		for (int j = 0; j < 9; j++)
 		{
-			piecesArr.push_back({});
 			char sym = 0;
+			int wasPromoted = 0;
 			setupFile >> sym;
+			promotionFile >> wasPromoted;
 			Team team = (sym >= 'a' && sym <= 'z' ? BLACK : WHITE);
 			switch (tolower(sym))
 			{
 				case 'p':
-					piecesArr[i].push_back(new Pawn({ i, j }, team, this));
+					piecesArr[i][j] = new Pawn({ i, j }, team, this);
+					if (wasPromoted)
+						piecesArr[i][j]->promote();
 					break;
 				case 'b':
-					piecesArr[i].push_back(new Bishop({ i, j }, team, this));
+					piecesArr[i][j] = new Bishop({ i, j }, team, this);
+					if (wasPromoted)
+						piecesArr[i][j]->promote();
 					break;
 				case 'l':
-					piecesArr[i].push_back(new Lance({ i, j }, team, this));
+					piecesArr[i][j] = new Lance({ i, j }, team, this);
+					if (wasPromoted)
+						piecesArr[i][j]->promote();
 					break;
 				case 'r':
-					piecesArr[i].push_back(new Rook({ i, j }, team, this));
+					piecesArr[i][j] = new Rook({ i, j }, team, this);
+					if (wasPromoted)
+						piecesArr[i][j]->promote();
 					break;
 				case 'g':
-					piecesArr[i].push_back(new GoldenGeneral({ i, j }, team, this));
+					piecesArr[i][j] = new GoldenGeneral({ i, j }, team, this);
+					if (wasPromoted)
+						piecesArr[i][j]->promote();
 					break;
 				case 's':
-					piecesArr[i].push_back(new SilverGeneral({ i, j }, team, this));
+					piecesArr[i][j] = new SilverGeneral({ i, j }, team, this);
+					if (wasPromoted)
+						piecesArr[i][j]->promote();
 					break;
 				case 'k':
-					piecesArr[i].push_back(new King({ i, j }, team, this));
+					piecesArr[i][j] = new King({ i, j }, team, this);
 					break;
 				case 'h':
-					piecesArr[i].push_back(new Knight({ i, j }, team, this));
+					piecesArr[i][j] = new Knight({ i, j }, team, this);
+					if (wasPromoted)
+						piecesArr[i][j]->promote();
 					break;
 				default:
-					piecesArr[i].push_back(nullptr);
+					piecesArr[i][j] = nullptr;
 			}
 		}
 	}

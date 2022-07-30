@@ -1,7 +1,9 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <fstream>
 #include "Utility.h"
+#include "Board.h"
 
 //Forward declarations
 class Piece;
@@ -21,6 +23,7 @@ public:
 	void addPrisoner(Piece* prisoner);
 	Piece* freePrisoner(const int cellNo);
 	Piece* peekPrisoner(const int cellNo);
+	void load(std::ifstream& prisonFile, Board* B);
 	int getCountOf(const int cellNo);
 	void draw();
 	static sf::Texture texture;

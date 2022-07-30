@@ -36,9 +36,17 @@ int Player::computeScore()
 	}
 	return score;
 }
+void Player::loadPrison(std::ifstream& prisonFile, Board* B)
+{
+	prison.load(prisonFile, B);
+}
 Piece* Player::freePrisoner(int cellNo)
 {
 	return prison.freePrisoner(cellNo);
+}
+void Player::setBoardptr(Board* _B)
+{
+	B = _B;
 }
 Piece* Player::peekPrisoner(int cellNo)
 {

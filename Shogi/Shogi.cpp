@@ -96,15 +96,6 @@ bool Shogi::selfCheck()
 	return doesEnemyCheck;
 }
 
-bool Shogi::didYouRighClick()
-{
-
-	while (window.pollEvent(event))
-	{
-		;//switch (event)
-	}
-	return false;
-}
 
 bool Shogi::checkMate()
 {
@@ -205,6 +196,13 @@ void Shogi::drawBackground()
 	window.draw(background);
 }
 
+bool Shogi::capturedKing()
+{
+	Pos kingPos = B->findKing(PlayersArr[!turn].getTeam());
+	return kingPos.x == -1 && kingPos.y == -1;
+
+}
+
 void Shogi::jishogi()
 {
 	Pos wKingPos = B->findKing(WHITE);
@@ -213,26 +211,42 @@ void Shogi::jishogi()
 	{
 		int wScore = PlayersArr[0].computeScore();
 		int bScore = PlayersArr[1].computeScore();
+		font.loadFromFile("assets/fonts/Agency-FB.ttf");
+		sf::Text gameEndMessage;
+		sf::Sprite messageSprite;
+		gameEndMessage.setFont(font);
+
+		gameEndMessage.setCharacterSize(50);
+		gameEndMessage.setPosition(740, 500);
+		gameEndMessage.setFillColor(sf::Color::Yellow);
+		messageSprite.setTexture(dialogueBox);
+		messageSprite.setPosition(window.getSize().x / 2 - messageSprite.getGlobalBounds().width / 2, window.getSize().y / 2 - messageSprite.getGlobalBounds().height / 2);
 		if (wScore < 24 && bScore < 24)
 		{
-			std::cout << "DRAW\n";
+			gameEndMessage.setString("The game has ended with a tie");
 		}
 		else if (bScore < 24)
 		{
-			std::cout << "WHITE won\n";
+			gameEndMessage.setString(PlayersArr[0].getName() + " has won the game");
 		}
 		else if (wScore < 24)
 		{
-			std::cout << "BLACK won\n";
+			gameEndMessage.setString(PlayersArr[1].getName() + " has won the game");
 		}
 		else
 		{
-			std::cout << "DRAW\n";
+			gameEndMessage.setString("The game has ended with a tie");
 		}
+		window.draw(messageSprite);
+		window.draw(gameEndMessage);
+		window.display();
+		mouseL();
+		exit(0);
 	}
 }
 
 sf::Texture Shogi::menu;
+sf::Texture Shogi::dialogueBox;
 std::string Shogi::inputNames(int colPixel, const std::string& p1Name)
 {
 	sf::Sprite menuSprite(Shogi::menu);
@@ -377,27 +391,52 @@ void Shogi::highlightForDrop(std::vector<std::vector<bool>>& dropZones)
 	}
 }
 
+bool Shogi::wantsToLoad()
+{
+	//sf::Sprite menuSprite(Shogi::menu);
+	//menuSprite.setPosition({ 0,0 });
+	//window.draw(menuSprite);
+	//window.display();
+again:
+	auto raw = mouseL();
+	if (raw.x >= 350 && raw.x <= 870 && raw.y >= 900 && raw.y <= 988)
+		return false;
+	if (raw.x >= 1060 && raw.x <= 1590 && raw.y >= 900 && raw.y <= 988)
+		return true;
+	else
+		goto again;
+}
+
 Shogi::Shogi()
-	: window(sf::VideoMode(1920, 1080), "Space Shogi", sf::Style::Titlebar), B(new Board{ &(this->window) }), turn(WHITE)
+	: window(sf::VideoMode(1920, 1080), "Space Shogi", sf::Style::Titlebar), B(nullptr), turn(WHITE)
 {
 	this->loadAssets();
 	font.loadFromFile("assets/fonts/Azonix.ttf");
 	window.setPosition({ -10,0 });
-	auto name1 = inputNames(465);
-	Player p1(name1, WHITE,
+	auto name = inputNames(465);
+	std::string mode = "new_game";
+	Player p1(name, WHITE,
+			  {
+				{BOARD_X - (100 + 98), 240}
+				  ,
+				  &window
+			  }, B);
+
+	name = inputNames(630, name);
+	if (wantsToLoad())
+		mode = "loadFile";
+	Player p2(name, BLACK,
 			  {
 				  {(BOARD_X + 968) + 100, 240},
 				  &window
 			  }, B);
-
-	auto name2 = inputNames(630, name1);
-	Player p2(name2, BLACK,
-			  {
-				  {BOARD_X - (100 + 98), 240},
-				  &window
-			  }, B);
+	B = new Board{ &(this->window), mode };
+	p1.setBoardptr(B);
+	p2.setBoardptr(B);
 	PlayersArr.push_back(p1);
 	PlayersArr.push_back(p2);
+	std::ifstream prisonFile(mode + "-prison.txt");
+	for (auto& player : PlayersArr) player.loadPrison(prisonFile, B);
 }
 
 void Shogi::loadAssets()
@@ -426,7 +465,7 @@ void Shogi::loadAssets()
 	Knight::texture.loadFromFile("assets/Knight.png");
 	Knight::texture_p.loadFromFile("assets/Knight-p.png");
 	//Misc
-	Shogi::font.loadFromFile("assets/fonts/Azonix.ttf");
+	//Shogi::font.loadFromFile("assets/fonts/Azonix.ttf");
 	Shogi::promoTexture.loadFromFile("assets/promo-prompt.png");
 	Prison::texture.loadFromFile("assets/prison.png");
 	Board::green_h.loadFromFile("assets/green-h.png");
@@ -434,6 +473,7 @@ void Shogi::loadAssets()
 	Board::boardTexture.loadFromFile("assets/board-c.png");
 	Shogi::bgTexture.loadFromFile("assets/w-background.jpg");
 	Shogi::menu.loadFromFile("assets/menu.png");
+	Shogi::dialogueBox.loadFromFile("assets/message.png");
 }
 
 Shogi::~Shogi()
@@ -473,12 +513,22 @@ void Shogi::play()
 				static Pos raw;
 				if (checkMate())
 				{
-					//TODO: Display output on window
-					std::cout << "CHECKMATE\n";
-					while (window.pollEvent(event) || true)
-					{
+					font.loadFromFile("assets/fonts/Agency-FB.ttf");
+					sf::Text gameEndMessage;
+					sf::Sprite messageSprite;
+					gameEndMessage.setFont(font);
 
-					}
+					gameEndMessage.setCharacterSize(50);
+					gameEndMessage.setPosition(740, 500);
+					gameEndMessage.setFillColor(sf::Color::Yellow);
+					messageSprite.setTexture(dialogueBox);
+					messageSprite.setPosition(window.getSize().x / 2 - messageSprite.getGlobalBounds().width / 2, window.getSize().y / 2 - messageSprite.getGlobalBounds().height / 2);
+					gameEndMessage.setString("CHECKMATE \n" + PlayersArr[!turn].getName() + " has won");
+					window.draw(messageSprite);
+					window.draw(gameEndMessage);
+					window.display();
+					mouseL();
+					exit(0);
 				}
 				int cellNo = -1;
 				std::vector<std::vector<bool>> dropZones;
@@ -541,6 +591,11 @@ void Shogi::play()
 						break;
 					} while (true);
 					if (didBreak) break;
+					drawBackground();
+					for (auto& i : PlayersArr) i.drawPrison();
+					B->printBoard();
+					printText();
+					window.display();
 
 				} while (!isValidDest(tgtPos) || !(*B)[srcPos]->isValidMove(tgtPos));
 				if (cellNo < 0)
@@ -554,6 +609,24 @@ void Shogi::play()
 					jishogi();
 					if ((*B)[tgtPos]->isPromotable() && prompt())
 						(*B)[tgtPos]->promote();
+				}
+				if (capturedKing())
+				{
+					font.loadFromFile("assets/fonts/Agency-FB.ttf");
+					sf::Text gameEndMessage;
+					sf::Sprite messageSprite;
+					gameEndMessage.setFont(font);
+					gameEndMessage.setString(PlayersArr[turn].getName() + " has won the game");
+					gameEndMessage.setCharacterSize(50);
+					gameEndMessage.setPosition(window.getSize().x / 2 - gameEndMessage.getGlobalBounds().width / 2, window.getSize().y / 2 - gameEndMessage.getGlobalBounds().height / 2);
+					gameEndMessage.setFillColor(sf::Color::Yellow);
+					messageSprite.setTexture(dialogueBox);
+					messageSprite.setPosition(window.getSize().x / 2 - messageSprite.getGlobalBounds().width / 2, window.getSize().y / 2 - messageSprite.getGlobalBounds().height / 2);
+					window.draw(messageSprite);
+					window.draw(gameEndMessage);
+					window.display();
+					mouseL();
+					return;
 				}
 				turn = !turn;
 			} while (true);

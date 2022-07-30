@@ -18,7 +18,9 @@ public:
 	Team getTeam() const;
 	void drawPrison();
 	int computeScore();
+	void loadPrison(std::ifstream& prisonFile, Board* B);
 	Piece* freePrisoner(int cellNo);
+	void setBoardptr(Board* _B);
 	Piece* peekPrisoner(int cellNo);
 	int mapToCell(Pos raw);
 	sf::Vector2i getPrisonCorner();

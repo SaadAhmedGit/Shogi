@@ -21,6 +21,7 @@ private:
 	static sf::Texture bgTexture;
 	static sf::Texture promoTexture;
 	static sf::Font font;
+	static sf::Texture dialogueBox;
 
 	//Helpers
 	Pos mapToBoard(Pos raw);
@@ -29,18 +30,19 @@ private:
 	void printText();
 	bool Check();
 	bool selfCheck();
-	bool didYouRighClick();
 	bool checkMate();
 	bool prompt();
 	bool liesInPrison(Pos raw);
-	Pos mouseL();
 	void drawBackground();
+	bool capturedKing();
 	void jishogi();
 	std::string inputNames(int colPixel, const std::string& p1Name = "");
 	std::vector<std::vector<bool>> computeDropZones(Piece* prisoner);
 	void highlightForDrop(std::vector<std::vector<bool>>& dropZones);
 
 public:
+	bool wantsToLoad();
+	Pos mouseL();
 	Shogi();
 	void loadAssets();
 	~Shogi();
