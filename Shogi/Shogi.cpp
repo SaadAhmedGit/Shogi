@@ -393,10 +393,6 @@ void Shogi::highlightForDrop(std::vector<std::vector<bool>>& dropZones)
 
 bool Shogi::wantsToLoad()
 {
-	//sf::Sprite menuSprite(Shogi::menu);
-	//menuSprite.setPosition({ 0,0 });
-	//window.draw(menuSprite);
-	//window.display();
 again:
 	auto raw = mouseL();
 	if (raw.x >= 350 && raw.x <= 870 && raw.y >= 900 && raw.y <= 988)
@@ -488,9 +484,6 @@ void Shogi::play()
 {
 	window.setFramerateLimit(60);
 	window.setKeyRepeatEnabled(false);
-
-	//PlayersArr[0].capture(new Bishop({ 8, 8 }, WHITE, B));
-	//sf::Sprite board(boardTexture);
 
 	while (window.isOpen())
 	{
@@ -587,16 +580,9 @@ void Shogi::play()
 							else
 								continue;
 						}
-						didBreak = true;
 						break;
 					} while (true);
 					if (didBreak) break;
-					drawBackground();
-					for (auto& i : PlayersArr) i.drawPrison();
-					B->printBoard();
-					printText();
-					window.display();
-
 				} while (!isValidDest(tgtPos) || !(*B)[srcPos]->isValidMove(tgtPos));
 				if (cellNo < 0)
 				{
