@@ -9,7 +9,8 @@ One of the four projects that we were assigned during our OOP course at ITU taug
 * C++ 20
 
 ## Note:
-* The release mode for msvc fails in optimizing the game and generates machine code that makes the game crash. This however, is not the case with debug mode so for now on, compile the game using debug mode (performance is still good enough)
+* The release mode for msvc fails in optimizing the game and generates machine code that causes the game to crash. This however, is not the case with debug mode so for now on, compile the game using debug mode (performance is still good enough)
+* Only 1920x1080 resolution is supported for now.
 ## Instructions for players:
 * After entering each name, press enter or else it won't proceed. Only after pressing enter after entering the second player's name, you may press new or load game buttons
 * Standard Shogi rules apply, you can read about them here: [shogi-rules](https://www.shogi.cz/en/rules)
@@ -17,4 +18,5 @@ One of the four projects that we were assigned during our OOP course at ITU taug
 ## Game Screenshots
 ![Gameplay screenshot of Shogi](https://i.imgur.com/pgHCaqC.jpg?1)
 ![Promotion prompt screenshot of Shogi](https://i.imgur.com/nQ5964g.jpg?1)
+![Drop feature screenshot of Shogi](https://imgur.com/lp2hEm2.jpg)
 ![Main menu of Shogi](https://i.imgur.com/Sk7UKyS.jpg?1)
