@@ -16,8 +16,9 @@ Board::Board(sf::RenderWindow* windowPtr, const std::string& boardFile)
 	:winP(windowPtr), piecesArr(9, std::vector<Piece*>(9, 0))
 {
 	std::ifstream setupFile(boardFile + "-s.txt");
+	if (!setupFile.is_open()) throw "Setup file couldn't be loaded";
 	std::ifstream promotionFile(boardFile + "-p.txt");
-	if (!promotionFile.is_open()) throw "Nigga";
+	if (!promotionFile.is_open()) throw "Promotion file couldn't be loaded";
 
 	for (int i = 0; i < 9; i++)
 	{
